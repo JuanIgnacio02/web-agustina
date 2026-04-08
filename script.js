@@ -1,48 +1,34 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+
+  // =========================
+  // 0) Supabase config
+  // =========================
+  const SUPABASE_URL = "https://srqkahdyboqannrmkqmf.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_C25BY4_efIwhRHoBqzYvgQ_MqMGmrI7";
+
+  async function fetchProducts() {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/productos?activo=eq.true&order=created_at.desc`, {
+      headers: {
+        "apikey": SUPABASE_KEY,
+        "Authorization": `Bearer ${SUPABASE_KEY}`
+      }
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
+    return data.map(p => ({
+      id: p.id,
+      name: p.name,
+      price: p.price,
+      image: p.image_url,
+      cat: p.cat,
+      sub: p.sub
+    }));
+  }
 
   // =========================
   // 0) Data
   // =========================
-  const products = [
-
-    // Botellas térmicas
-    { name: "Botella Zorro", price: 25000, image: "assets/botella-zorro.jpg", cat: "botellas-y-vasos", sub: "botellas" },
-    { name: "Botella Judy Hopps", price: 40000, image: "assets/botella-conejo.jpg", cat: "botellas-y-vasos", sub: "botellas" },
-    { name: "Botella Stitch", price: 8500, image: "assets/botella-stich.jpg", cat: "botellas-y-vasos", sub: "botellas" },
-
-    // Ropa
-    { name: "Short Jean", price: 18000, image: "assets/short-jean.jpg", cat: "indumentaria", sub: "inferior" },
-    { name: "Bermuda Negra", price: 22000, image: "assets/short-negro.jpg", cat: "indumentaria", sub: "inferior" },
-
-    // Accesorios
-    { name: "Cartera Trendy", price: 9500, image: "assets/cartera-trendy.jpg", cat: "accesorios", sub: "accesorios" },
-    { name: "Bolso Amayra", price: 9500, image: "assets/bolso-amayra.jpg", cat: "accesorios", sub: "accesorios" },
-
-    // Maquillaje
-    { name: "Maquillaje", price: 9500, image: "assets/maquillaje1.jpg", cat: "maquillaje", sub: "maquillaje" },
-    { name: "Maquillaje", price: 9500, image: "assets/maquillaje2.jpg", cat: "maquillaje", sub: "maquillaje" },
-    { name: "Maquillaje", price: 9500, image: "assets/maquillaje3.jpg", cat: "maquillaje", sub: "maquillaje" },
-    { name: "Maquillaje", price: 9500, image: "assets/maquillaje4.jpg", cat: "maquillaje", sub: "maquillaje" },
-    { name: "Maquillaje", price: 9500, image: "assets/maquillaje5.jpg", cat: "maquillaje", sub: "maquillaje" },
-    { name: "Maquillaje", price: 9500, image: "assets/maquillaje6.jpg", cat: "maquillaje", sub: "maquillaje" },
-    { name: "Maquillaje", price: 9500, image: "assets/maquillaje7.jpg", cat: "maquillaje", sub: "maquillaje" },
-    { name: "Maquillaje", price: 9500, image: "assets/maquillaje8.jpg", cat: "maquillaje", sub: "maquillaje" },
-    { name: "Maquillaje", price: 9500, image: "assets/maquillaje9.jpg", cat: "maquillaje", sub: "maquillaje" },
-    { name: "Maquillaje", price: 9500, image: "assets/maquillaje10.jpg", cat: "maquillaje", sub: "maquillaje" },
-
-    // Tazas
-    { name: "Taza Jeryy", price: 9500, image: "assets/taza-jerry.jpg", cat: "tazas", sub: "tazas" },
-    { name: "Taza Tom", price: 9500, image: "assets/taza-tom.jpg", cat: "tazas", sub: "tazas" },
-    { name: "Taza Pelota", price: 9500, image: "assets/taza-pelota.jpg", cat: "tazas", sub: "tazas" },
-    { name: "Taza Ceramica", price: 9500, image: "assets/taza1.jpg", cat: "tazas", sub: "tazas" },
-    { name: "Taza Ceramica", price: 9500, image: "assets/taza2.jpg", cat: "tazas", sub: "tazas" },
-    { name: "Taza Ceramica", price: 9500, image: "assets/taza3.jpg", cat: "tazas", sub: "tazas" },
-    { name: "Taza Ceramica", price: 9500, image: "assets/taza4.jpg", cat: "tazas", sub: "tazas" },
-    { name: "Taza Ceramica", price: 9500, image: "assets/taza5.jpg", cat: "tazas", sub: "tazas" },
-    { name: "Taza Ceramica", price: 9500, image: "assets/taza6.jpg", cat: "tazas", sub: "tazas" },
-    { name: "Taza Ceramica", price: 9500, image: "assets/taza7.jpg", cat: "tazas", sub: "tazas" },
-
-  ];
+  let products = [];
 
   // =========================
   // 1) DOM
@@ -207,6 +193,8 @@ if (chipGroup) {
   // =========================
   // Init
   // =========================
+  grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;padding:2rem;color:#999">Cargando productos...</p>`;
+  products = await fetchProducts();
   renderProducts({ type: "all", value: "all" });
 
 // =========================
