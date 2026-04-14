@@ -24,3 +24,10 @@ Este proyecto también forma parte del portfolio de desarrollo web, destacando h
 	•	🚀 Despliegue en Vercel para máxima velocidad y disponibilidad.
 	•	🔗 Enlaces directos a redes sociales y WhatsApp.
 	•	💖 Interfaz inspirada en estilos modernos y estética tipo Pinterest.
+
+👨‍💻 Autor
+
+Juan Ignacio Pérez
+🎓 Estudiante de Ingeniería en Sistemas de Información
+💼 Desarrollador Web
+	•	GitHub: https://github.com/JuanIgnacio02
